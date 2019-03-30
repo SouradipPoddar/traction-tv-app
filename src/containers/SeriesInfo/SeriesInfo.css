@@ -1,0 +1,100 @@
+.backdrop {
+  width: 100%;
+  top: 0px;
+  position: absolute;
+  left: 0px;
+  z-index: -1;
+  filter: blur(8px);
+}
+
+.overview {
+  text-align: left;
+  margin-top: 2%;
+}
+
+.title {
+  color: white;
+  margin-left: 8%;
+  margin-top: 3%;
+  background-color: black;
+  font-size: 35px;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.poster {
+  width: 25%;
+  text-align: left;
+  padding-left: 8%;
+}
+
+.overviewText {
+  width: 50%;
+  text-align: left;
+  font-size: 16px;
+}
+
+.overviewText p {
+  background-color: black;
+  color: white;
+  padding: 25px;
+  margin: 0;
+}
+
+.info {
+  background-color: black;
+  color: white;
+  width: max-content;
+  padding: 8px;
+  display: flex;
+}
+
+.infoList {
+  display: flex;
+}
+
+.genreListItem {
+  display: inline;
+  padding-left: 6px;
+}
+.imageShadow {
+  box-shadow: 1px 3px 3px 1px rgba(30, 30, 30, 0.5);
+}
+
+@media (max-width: 1250px) {
+  .imageShadow {
+    width: 200px;
+  }
+}
+
+.durationBar {
+  margin-top: 27px;
+  margin-left: 20px;
+}
+
+.genreListItem:before {
+  content: "\00a0\2022\00a0\00a0";
+  color: #999;
+  color: rgba(255, 255, 255, 1);
+  font-size: 11px;
+}
+.genreListItem:first-child:before {
+  content: "";
+}
+
+.genreList {
+  margin: 0;
+  padding-top: 8px;
+  padding-left: 8px;
+  margin-left: 16px;
+  background-color: black;
+  color: white;
+  padding-right: 16px;
+}
+
+.basicPage {
+  width: 100%;
+  z-index: -1;
+  top: 50px;
+  left: 0;
+}

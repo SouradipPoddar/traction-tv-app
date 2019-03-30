@@ -1,0 +1,22 @@
+.actionList {
+  display: flex;
+  position: absolute;
+  right: 17%;
+}
+
+.icon {
+  background-color: black;
+  padding: 8px;
+}
+
+.icon i {
+  color: white;
+}
+
+.icon:hover {
+  background-color: white;
+}
+
+.icon:hover i {
+  color: black;
+}

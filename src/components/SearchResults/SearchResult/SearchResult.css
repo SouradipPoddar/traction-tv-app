@@ -1,0 +1,17 @@
+.resultCard {
+  display: flex;
+  margin-left: 4%;
+  margin-top: 2%;
+  flex-flow: column;
+  width: 185px;
+}
+
+.resultImage {
+  box-shadow: 1px 1px gray;
+  border-radius: 2px;
+  height: 100%;
+}
+
+.resultCard span {
+  margin-top: 5px;
+}

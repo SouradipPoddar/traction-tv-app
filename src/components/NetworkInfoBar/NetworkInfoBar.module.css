@@ -1,0 +1,12 @@
+.info {
+  background-color: black;
+  color: white;
+  width: max-content;
+  padding: 8px;
+  display: flex;
+}
+
+.networkBar {
+  margin-top: 27px;
+  margin-left: 20px;
+}

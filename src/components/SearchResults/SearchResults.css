@@ -1,0 +1,19 @@
+.result {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  width: 100%;
+}
+
+.searchText {
+  text-align: left;
+  margin-top: 1%;
+  margin-left: 2%;
+  font-size: 30px;
+  width: 95%;
+  font-weight: bold;
+}
+
+.searchText hr {
+  margin: 2px;
+}
