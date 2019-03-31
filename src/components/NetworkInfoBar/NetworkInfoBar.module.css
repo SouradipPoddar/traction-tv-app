@@ -10,3 +10,16 @@
   margin-top: 27px;
   margin-left: 20px;
 }
+
+.networkList:before {
+  content: "\00a0\2022\00a0\00a0";
+  color: #999;
+  color: rgba(255, 255, 255, 1);
+  font-size: 11px;
+}
+.networkList:first-child:before {
+  content: "";
+}
+.networkList {
+  padding-left: 2px;
+}

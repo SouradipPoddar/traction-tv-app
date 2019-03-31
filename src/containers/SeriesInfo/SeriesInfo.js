@@ -5,15 +5,20 @@ import ActionList from "../../components/ActionList/ActionList";
 import RatingBar from "../../components/RatingBar/RatingBar";
 import NetworkInfoBar from "../../components/NetworkInfoBar/NetworkInfoBar";
 import firebaseSetup from "../../firebase-db";
+import Tags from "../../components/Tags/Tags";
 
 class SeriesInfo extends Component {
   state = {
-    data: null
+    data: null,
+    tags: null
   };
 
   componentDidUpdate = () => {
     //console.log("From JS");
-    if (this.state.data.id.toString() !== this.props.match.params.id) {
+    if (
+      this.state.data !== null &&
+      this.state.data.id.toString() !== this.props.match.params.id
+    ) {
       let data = { api_key: process.env.REACT_APP_TMDB_KEY };
 
       console.log(process.env);
@@ -26,14 +31,22 @@ class SeriesInfo extends Component {
             data: response.data
           });
         });
+
+      const db = firebaseSetup.firestore();
+      db.collection("tags")
+        .doc("1399")
+        .get()
+        .then(resp => {
+          if (!resp.exists) {
+            console.log("No such document!");
+          }
+          console.log(resp.data());
+          this.setState({ tags: resp.data() });
+        })
+        .catch(err => {
+          console.log("Error getting document", err);
+        });
     }
-    const db = firebaseSetup.firestore();
-    db.collection("tags")
-      .doc("1399")
-      .get()
-      .then(resp => {
-        console.log(resp.data());
-      });
   };
 
   componentDidMount() {
@@ -47,6 +60,20 @@ class SeriesInfo extends Component {
         this.setState({
           data: response.data
         });
+      });
+    const db = firebaseSetup.firestore();
+    db.collection("tags")
+      .doc("1399")
+      .get()
+      .then(resp => {
+        if (!resp.exists) {
+          console.log("No such document!");
+        }
+        console.log(resp.data());
+        this.setState({ tags: resp.data() });
+      })
+      .catch(err => {
+        console.log("Error getting document", err);
       });
   }
 
@@ -99,6 +126,10 @@ class SeriesInfo extends Component {
               </div>
             </div>
           </div>
+          <div className="tagPosition">
+            <Tags tagList={this.state.tags} />
+          </div>
+
           <img
             src={
               "https://image.tmdb.org/t/p/w780/" + this.state.data.backdrop_path

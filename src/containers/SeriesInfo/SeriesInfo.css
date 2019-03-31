@@ -98,3 +98,10 @@
   top: 50px;
   left: 0;
 }
+
+.tagPosition {
+  margin-left: 8%;
+  width: 20%;
+  margin-right: 0px;
+  margin-top: 3%;
+}

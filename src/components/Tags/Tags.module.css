@@ -1,0 +1,36 @@
+.wrapTags {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.peopleCount {
+  padding-left: 4px;
+}
+
+.peopleCount:before {
+  content: "\00a0\2022\00a0\00a0";
+  color: #999;
+  color: rgba(255, 255, 255, 1);
+  font-size: 11px;
+}
+
+.tagStyle {
+  background-color: black;
+  color: white;
+  padding: 2px 10px 3px 10px;
+  margin: 3px;
+  border-radius: 4px;
+  margin-top: 6%;
+  width: 28%;
+}
+
+.tagStyle:hover {
+  background-color: white;
+  color: black;
+  cursor: pointer;
+}
+
+.iconHover {
+  font-size: 14px;
+}
