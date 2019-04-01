@@ -5,7 +5,11 @@ const NetworkInfoBar = props => {
   return (
     <div className={[styles.info, styles.networkBar].join(" ")}>
       {props.networkList.map((item, i) => {
-        return <span className={styles.networkList}>{item.name}</span>;
+        return (
+          <span className={styles.networkList} key={i}>
+            {item.name}
+          </span>
+        );
       })}
     </div>
   );

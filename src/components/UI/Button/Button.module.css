@@ -1,0 +1,15 @@
+.customButton {
+  border: 2px solid white;
+  box-sizing: border-box;
+  padding: 8px;
+  width: max-content;
+  font-size: 16px;
+  margin-top: 20px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.customButton:hover {
+  background-color: white;
+  color: black;
+}

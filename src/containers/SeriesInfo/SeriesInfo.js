@@ -10,7 +10,75 @@ import Tags from "../../components/Tags/Tags";
 class SeriesInfo extends Component {
   state = {
     data: null,
-    tags: null
+    tags: null,
+    showTagModal: false,
+    tagValues: [],
+    tagList: [
+      "bingeWorthy",
+      "brainStorming",
+      "decreasingQuality",
+      "fastPaced",
+      "funny",
+      "goodForCouples",
+      "intellectual",
+      "miniSeries",
+      "mustWatch",
+      "shortEpisodes",
+      "simplePlot"
+    ]
+  };
+
+  toggleTagModalHandler = () => {
+    this.setState((prevState, nextProps) => {
+      return { showTagModal: !prevState.showTagModal };
+    });
+  };
+
+  toggleCheckboxValue = index => {
+    this.setState((prevState, nextProps) => {
+      let currValue = this.state.tagValues;
+      currValue[index] = !currValue[index];
+
+      return { tagValues: currValue };
+    });
+  };
+
+  updateTagValues = () => {
+    const db = firebaseSetup.firestore();
+    db.collection("tags")
+      .doc(this.props.match.params.id)
+      .get()
+      .then(resp => {
+        let newTags;
+        if (!resp.exists) {
+          newTags = {};
+          for (let i in this.state.tagList) {
+            newTags[this.state.tagList[i]] = +this.state.tagValues[i];
+          }
+        } else {
+          console.log(this.state.tagValues);
+          newTags = resp.data();
+          let keys = Object.keys(newTags);
+          for (let i in keys) {
+            if (this.state.tagValues[i]) {
+              newTags[keys[i]] = newTags[keys[i]] + 1;
+            }
+          }
+        }
+        console.log(newTags);
+        db.collection("tags")
+          .doc(this.props.match.params.id)
+          .set(newTags)
+          .then(resp => {
+            console.log("Success.Go to Sleep");
+            this.setState({ showTagModal: false, tags: newTags });
+          });
+
+        this.setState({ showTagModal: false });
+      })
+      .catch(err => {
+        console.log("Error getting document", err);
+      });
   };
 
   componentDidUpdate = () => {
@@ -34,15 +102,28 @@ class SeriesInfo extends Component {
 
       const db = firebaseSetup.firestore();
       db.collection("tags")
-        .doc("1399")
+        .doc(this.props.match.params.id)
         .get()
         .then(resp => {
           if (!resp.exists) {
-            console.log("No such document!");
+            let emptyTags = {};
+            for (let i in this.state.tagList) {
+              emptyTags[this.state.tagList[i]] = 0;
+            }
+            this.setState({
+              tags: emptyTags,
+              tagValues: new Array(Object.keys(emptyTags).length).fill(false)
+            });
+          } else {
+            console.log(Object.keys(resp.data).length);
+            this.setState({
+              tags: resp.data(),
+              tagValues: new Array(Object.keys(resp.data()).length).fill(false)
+            });
           }
-          console.log(resp.data());
-          this.setState({ tags: resp.data() });
+          console.log(this.state.tagValues);
         })
+
         .catch(err => {
           console.log("Error getting document", err);
         });
@@ -56,21 +137,35 @@ class SeriesInfo extends Component {
     axiosTmdb
       .get("/tv/" + this.props.match.params.id, { params: data })
       .then(response => {
-        //console.log(response.data);
+        console.log(response.data);
         this.setState({
           data: response.data
         });
+      })
+      .catch(err => {
+        console.log(err);
       });
     const db = firebaseSetup.firestore();
     db.collection("tags")
-      .doc("1399")
+      .doc(this.props.match.params.id)
       .get()
       .then(resp => {
         if (!resp.exists) {
-          console.log("No such document!");
+          let emptyTags = {};
+          for (let i in this.state.tagList) {
+            emptyTags[this.state.tagList[i]] = 0;
+          }
+          this.setState({
+            tags: emptyTags,
+            tagValues: new Array(Object.keys(emptyTags).length).fill(false)
+          });
+        } else {
+          console.log(resp.data());
+          this.setState({
+            tags: resp.data(),
+            tagValues: new Array(Object.keys(resp.data()).length).fill(false)
+          });
         }
-        console.log(resp.data());
-        this.setState({ tags: resp.data() });
       })
       .catch(err => {
         console.log("Error getting document", err);
@@ -127,7 +222,14 @@ class SeriesInfo extends Component {
             </div>
           </div>
           <div className="tagPosition">
-            <Tags tagList={this.state.tags} />
+            <Tags
+              tagList={this.state.tags}
+              showNewTagModal={this.state.showTagModal}
+              addButtonClick={this.toggleTagModalHandler}
+              valueArray={this.state.tagValues}
+              checkboxValues={this.toggleCheckboxValue}
+              addTag={this.updateTagValues}
+            />
           </div>
 
           <img

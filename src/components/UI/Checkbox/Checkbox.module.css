@@ -1,0 +1,12 @@
+.checkboxStyle {
+  border: 2px solid white;
+  width: max-content;
+  display: flex;
+  padding: 4px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.notCheked {
+  visibility: hidden;
+}
