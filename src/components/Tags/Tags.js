@@ -27,6 +27,11 @@ const Tags = props => {
           if (props.tagList[a] > props.tagList[b]) {
             return -1;
           }
+
+          if (props.tagList[a] === props.tagList[b]) {
+            return 1;
+          }
+          return 1;
         })
         .map((item, i) => {
           if (i < 5 && props.tagList[item] !== 0) {

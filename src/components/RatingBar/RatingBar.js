@@ -1,5 +1,5 @@
 import React from "react";
-import "./RatingBar.css";
+import styles from "./RatingBar.module.css";
 
 const RatingBar = props => {
   let fullStar = [...Array(Math.round(props.rating / 2))].map((item, i) => {
@@ -12,10 +12,10 @@ const RatingBar = props => {
     }
   );
   return (
-    <div className="ratingDiv">
+    <div className={styles.ratingDiv}>
       {fullStar}
       {emptyStar}
-      <span className="ratingText">{props.rating.toFixed(1)}</span>
+      <span className={styles.ratingText}>{props.rating.toFixed(1)}</span>
     </div>
   );
 };

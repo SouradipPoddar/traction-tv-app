@@ -1,0 +1,42 @@
+.seasonTab {
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+  margin-top: 3%;
+  flex-flow: column;
+  transition: all 0.1s ease-out;
+}
+
+.innerDiv {
+  display: flex;
+  width: 100%;
+  margin-top: 3%;
+  transition: all 0.1s ease-out;
+}
+
+.singleSeason {
+  margin-right: 1.8%;
+  text-align: center;
+  background-color: black;
+  color: white;
+  padding-bottom: 0.5%;
+  display: flex;
+  flex-flow: column;
+  width: 154px;
+  box-shadow: 1px 3px 3px 1px rgba(30, 30, 30, 0.5);
+}
+
+.poster {
+  height: 223px;
+  width: 154px;
+}
+
+.seasonNameText {
+  padding: 1%;
+  margin: 0;
+  color: white;
+}
+
+.navRight {
+  transform: translateX(-101.5%);
+}

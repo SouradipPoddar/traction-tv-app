@@ -1,0 +1,67 @@
+.tabs {
+  background-color: black;
+  color: white;
+  margin: 1.12%;
+  cursor: pointer;
+  display: block;
+}
+
+.wrapperTabs {
+  display: -webkit-box;
+  text-align: center;
+  padding-top: 1%;
+  padding-bottom: 0.5%;
+  transition: all 0.1s ease-out;
+}
+
+.selectedTab {
+  border-bottom: 1px solid white;
+}
+
+.wrapperClass {
+  background-color: black;
+  margin-top: 3%;
+  padding-bottom: 2%;
+  color: white;
+  height: 252px;
+  overflow: hidden;
+}
+
+.mainInfo {
+  font-size: 21px;
+  padding: 1%;
+  margin-left: 1%;
+}
+
+.dateText {
+  float: right;
+  margin-right: 3%;
+  font-size: 16px;
+  margin-top: 1%;
+}
+
+.imageOverview img {
+  margin-left: 2%;
+}
+
+.imageOverview {
+  display: flex;
+}
+
+.textInfo {
+  width: 55%;
+  margin-left: 2%;
+}
+
+.episodeRating {
+  margin-top: 3%;
+}
+
+.tabWidth {
+  width: 10%;
+  padding-bottom: 0.5%;
+}
+
+.backButton {
+  text-align: -webkit-center;
+}

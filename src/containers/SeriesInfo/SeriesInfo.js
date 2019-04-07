@@ -6,6 +6,9 @@ import RatingBar from "../../components/RatingBar/RatingBar";
 import NetworkInfoBar from "../../components/NetworkInfoBar/NetworkInfoBar";
 import firebaseSetup from "../../firebase-db";
 import Tags from "../../components/Tags/Tags";
+import SeasonInfo from "../SeasonInfo/SeasonInfo";
+import { Route, Switch } from "react-router-dom";
+import EpisodeListInfo from "../EpisodeListInfo/EpisodeListInfo";
 
 class SeriesInfo extends Component {
   state = {
@@ -204,7 +207,7 @@ class SeriesInfo extends Component {
               />
             </div>
             <div className="overviewText">
-              <p>{this.state.data.overview}</p>
+              <p className="overviewPara">{this.state.data.overview}</p>
               <br />
               <br />
               <div className="infoList">
@@ -213,11 +216,37 @@ class SeriesInfo extends Component {
                 <ActionList homepage={this.state.data.homepage} />
               </div>
               <div className="infoList">
-                <RatingBar rating={this.state.data.vote_average} />
+                <div className="ratingBar">
+                  <RatingBar rating={this.state.data.vote_average} />
+                </div>
                 <span className="info durationBar">
                   {this.state.data.episode_run_time[0] + " min"}
                 </span>
                 <NetworkInfoBar networkList={this.state.data.networks} />
+              </div>
+
+              <div>
+                <Switch>
+                  <Route
+                    path={this.props.match.url}
+                    exact
+                    component={props => (
+                      <SeasonInfo
+                        seasonInfo={this.state.data.seasons}
+                        {...props}
+                      />
+                    )}
+                  />
+                  <Route
+                    path={this.props.match.url + "/seasons/:seasonNumber"}
+                    component={props => (
+                      <EpisodeListInfo
+                        seriesId={this.props.match.params.id}
+                        {...props}
+                      />
+                    )}
+                  />
+                </Switch>
               </div>
             </div>
           </div>

@@ -1,0 +1,9 @@
+.navButtons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1%;
+}
+.navButtons i:hover {
+  color: white;
+  cursor: pointer;
+}
