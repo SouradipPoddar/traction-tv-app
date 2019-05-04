@@ -9,6 +9,7 @@ import Tags from "../../components/Tags/Tags";
 import SeasonInfo from "../SeasonInfo/SeasonInfo";
 import { Route, Switch } from "react-router-dom";
 import EpisodeListInfo from "../EpisodeListInfo/EpisodeListInfo";
+import { connect } from "react-redux";
 
 class SeriesInfo extends Component {
   state = {
@@ -37,15 +38,6 @@ class SeriesInfo extends Component {
     });
   };
 
-  toggleCheckboxValue = index => {
-    this.setState((prevState, nextProps) => {
-      let currValue = this.state.tagValues;
-      currValue[index] = !currValue[index];
-
-      return { tagValues: currValue };
-    });
-  };
-
   updateTagValues = () => {
     const db = firebaseSetup.firestore();
     db.collection("tags")
@@ -56,14 +48,14 @@ class SeriesInfo extends Component {
         if (!resp.exists) {
           newTags = {};
           for (let i in this.state.tagList) {
-            newTags[this.state.tagList[i]] = +this.state.tagValues[i];
+            newTags[this.state.tagList[i]] = +this.props.tagValues[i];
           }
         } else {
-          console.log(this.state.tagValues);
+          console.log(this.props.tagValues);
           newTags = resp.data();
           let keys = Object.keys(newTags);
           for (let i in keys) {
-            if (this.state.tagValues[i]) {
+            if (this.props.tagValues[i]) {
               newTags[keys[i]] = newTags[keys[i]] + 1;
             }
           }
@@ -124,7 +116,7 @@ class SeriesInfo extends Component {
               tagValues: new Array(Object.keys(resp.data()).length).fill(false)
             });
           }
-          console.log(this.state.tagValues);
+          console.log(this.props.tagValues);
         })
 
         .catch(err => {
@@ -162,12 +154,14 @@ class SeriesInfo extends Component {
             tags: emptyTags,
             tagValues: new Array(Object.keys(emptyTags).length).fill(false)
           });
+          this.props.fillArray(Object.keys(emptyTags).length);
         } else {
           console.log(resp.data());
           this.setState({
             tags: resp.data(),
             tagValues: new Array(Object.keys(resp.data()).length).fill(false)
           });
+          this.props.fillArray(Object.keys(resp.data()).length);
         }
       })
       .catch(err => {
@@ -255,8 +249,8 @@ class SeriesInfo extends Component {
               tagList={this.state.tags}
               showNewTagModal={this.state.showTagModal}
               addButtonClick={this.toggleTagModalHandler}
-              valueArray={this.state.tagValues}
-              checkboxValues={this.toggleCheckboxValue}
+              valueArray={this.props.tagValues}
+              checkboxValues={this.props.toggleCheckboxValue}
               addTag={this.updateTagValues}
             />
           </div>
@@ -276,4 +270,20 @@ class SeriesInfo extends Component {
   }
 }
 
-export default SeriesInfo;
+const mapStateToProps = state => {
+  return {
+    tagValues: state.tagValues
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fillArray: length => dispatch({ type: "FILL_TAGS", length: length }),
+    toggleCheckboxValue: index => dispatch({ type: "TOGGLE_BOX", index: index })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SeriesInfo);
