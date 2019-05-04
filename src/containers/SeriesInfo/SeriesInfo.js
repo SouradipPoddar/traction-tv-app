@@ -10,26 +10,11 @@ import SeasonInfo from "../SeasonInfo/SeasonInfo";
 import { Route, Switch } from "react-router-dom";
 import EpisodeListInfo from "../EpisodeListInfo/EpisodeListInfo";
 import { connect } from "react-redux";
+import * as actions from "../../store/actions/tagActions";
 
 class SeriesInfo extends Component {
   state = {
-    data: null,
-    tags: null,
-    showTagModal: false,
-    tagValues: [],
-    tagList: [
-      "bingeWorthy",
-      "brainStorming",
-      "decreasingQuality",
-      "fastPaced",
-      "funny",
-      "goodForCouples",
-      "intellectual",
-      "miniSeries",
-      "mustWatch",
-      "shortEpisodes",
-      "simplePlot"
-    ]
+    showTagModal: false
   };
 
   toggleTagModalHandler = () => {
@@ -38,135 +23,20 @@ class SeriesInfo extends Component {
     });
   };
 
-  updateTagValues = () => {
-    const db = firebaseSetup.firestore();
-    db.collection("tags")
-      .doc(this.props.match.params.id)
-      .get()
-      .then(resp => {
-        let newTags;
-        if (!resp.exists) {
-          newTags = {};
-          for (let i in this.state.tagList) {
-            newTags[this.state.tagList[i]] = +this.props.tagValues[i];
-          }
-        } else {
-          console.log(this.props.tagValues);
-          newTags = resp.data();
-          let keys = Object.keys(newTags);
-          for (let i in keys) {
-            if (this.props.tagValues[i]) {
-              newTags[keys[i]] = newTags[keys[i]] + 1;
-            }
-          }
-        }
-        console.log(newTags);
-        db.collection("tags")
-          .doc(this.props.match.params.id)
-          .set(newTags)
-          .then(resp => {
-            console.log("Success.Go to Sleep");
-            this.setState({ showTagModal: false, tags: newTags });
-          });
-
-        this.setState({ showTagModal: false });
-      })
-      .catch(err => {
-        console.log("Error getting document", err);
-      });
-  };
-
   componentDidUpdate = () => {
     //console.log("From JS");
     if (
-      this.state.data !== null &&
-      this.state.data.id.toString() !== this.props.match.params.id
+      this.props.data !== null &&
+      this.props.data.id.toString() !== this.props.match.params.id
     ) {
-      let data = { api_key: process.env.REACT_APP_TMDB_KEY };
-
-      console.log(process.env);
-
-      axiosTmdb
-        .get("/tv/" + this.props.match.params.id, { params: data })
-        .then(response => {
-          console.log(response.data);
-          this.setState({
-            data: response.data
-          });
-        });
-
-      const db = firebaseSetup.firestore();
-      db.collection("tags")
-        .doc(this.props.match.params.id)
-        .get()
-        .then(resp => {
-          if (!resp.exists) {
-            let emptyTags = {};
-            for (let i in this.state.tagList) {
-              emptyTags[this.state.tagList[i]] = 0;
-            }
-            this.setState({
-              tags: emptyTags,
-              tagValues: new Array(Object.keys(emptyTags).length).fill(false)
-            });
-          } else {
-            console.log(Object.keys(resp.data).length);
-            this.setState({
-              tags: resp.data(),
-              tagValues: new Array(Object.keys(resp.data()).length).fill(false)
-            });
-          }
-          console.log(this.props.tagValues);
-        })
-
-        .catch(err => {
-          console.log("Error getting document", err);
-        });
+      this.props.fetchData(this.props.match.params.id);
+      this.props.populateData(this.props.match.params.id);
     }
   };
 
   componentDidMount() {
-    //console.log("From JS");
-
-    let data = { api_key: process.env.REACT_APP_TMDB_KEY };
-    axiosTmdb
-      .get("/tv/" + this.props.match.params.id, { params: data })
-      .then(response => {
-        console.log(response.data);
-        this.setState({
-          data: response.data
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    const db = firebaseSetup.firestore();
-    db.collection("tags")
-      .doc(this.props.match.params.id)
-      .get()
-      .then(resp => {
-        if (!resp.exists) {
-          let emptyTags = {};
-          for (let i in this.state.tagList) {
-            emptyTags[this.state.tagList[i]] = 0;
-          }
-          this.setState({
-            tags: emptyTags,
-            tagValues: new Array(Object.keys(emptyTags).length).fill(false)
-          });
-          this.props.fillArray(Object.keys(emptyTags).length);
-        } else {
-          console.log(resp.data());
-          this.setState({
-            tags: resp.data(),
-            tagValues: new Array(Object.keys(resp.data()).length).fill(false)
-          });
-          this.props.fillArray(Object.keys(resp.data()).length);
-        }
-      })
-      .catch(err => {
-        console.log("Error getting document", err);
-      });
+    this.props.fetchData(this.props.match.params.id);
+    this.props.populateData(this.props.match.params.id);
   }
 
   render() {
@@ -174,8 +44,8 @@ class SeriesInfo extends Component {
     //console.log(this.props);
 
     let pageBasics = null;
-    if (this.state.data !== null) {
-      genreList = this.state.data.genres.map((item, i) => {
+    if (this.props.data !== null) {
+      genreList = this.props.data.genres.map((item, i) => {
         return (
           <li className="genreListItem" key={i}>
             {item.name}
@@ -186,7 +56,7 @@ class SeriesInfo extends Component {
       pageBasics = (
         <div className="basicPage">
           <div className="overview">
-            <span className="title">{this.state.data.name}</span>
+            <span className="title">{this.props.data.name}</span>
           </div>
           <br />
           <div style={{ display: "flex" }}>
@@ -195,28 +65,28 @@ class SeriesInfo extends Component {
                 className="imageShadow"
                 src={
                   "https://image.tmdb.org/t/p/w300/" +
-                  this.state.data.poster_path
+                  this.props.data.poster_path
                 }
                 alt=""
               />
             </div>
             <div className="overviewText">
-              <p className="overviewPara">{this.state.data.overview}</p>
+              <p className="overviewPara">{this.props.data.overview}</p>
               <br />
               <br />
               <div className="infoList">
-                <span className="info">{this.state.data.status}</span>
+                <span className="info">{this.props.data.status}</span>
                 <ul className="genreList">{genreList}</ul>
-                <ActionList homepage={this.state.data.homepage} />
+                <ActionList homepage={this.props.data.homepage} />
               </div>
               <div className="infoList">
                 <div className="ratingBar">
-                  <RatingBar rating={this.state.data.vote_average} />
+                  <RatingBar rating={this.props.data.vote_average} />
                 </div>
                 <span className="info durationBar">
-                  {this.state.data.episode_run_time[0] + " min"}
+                  {this.props.data.episode_run_time[0] + " min"}
                 </span>
-                <NetworkInfoBar networkList={this.state.data.networks} />
+                <NetworkInfoBar networkList={this.props.data.networks} />
               </div>
 
               <div>
@@ -226,7 +96,7 @@ class SeriesInfo extends Component {
                     exact
                     component={props => (
                       <SeasonInfo
-                        seasonInfo={this.state.data.seasons}
+                        seasonInfo={this.props.data.seasons}
                         {...props}
                       />
                     )}
@@ -246,18 +116,18 @@ class SeriesInfo extends Component {
           </div>
           <div className="tagPosition">
             <Tags
-              tagList={this.state.tags}
-              showNewTagModal={this.state.showTagModal}
-              addButtonClick={this.toggleTagModalHandler}
+              tagList={this.props.tags}
+              showNewTagModal={this.props.showTagModal}
+              addButtonClick={this.props.toggleModal}
               valueArray={this.props.tagValues}
               checkboxValues={this.props.toggleCheckboxValue}
-              addTag={this.updateTagValues}
+              addTag={() => this.props.updateTags(this.props.match.params.id)}
             />
           </div>
 
           <img
             src={
-              "https://image.tmdb.org/t/p/w780/" + this.state.data.backdrop_path
+              "https://image.tmdb.org/t/p/w780/" + this.props.data.backdrop_path
             }
             alt=""
             className="backdrop"
@@ -272,14 +142,21 @@ class SeriesInfo extends Component {
 
 const mapStateToProps = state => {
   return {
-    tagValues: state.tagValues
+    tagValues: state.tagValues,
+    tags: state.tags,
+    data: state.data,
+    showTagModal: state.showTagModal
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fillArray: length => dispatch({ type: "FILL_TAGS", length: length }),
-    toggleCheckboxValue: index => dispatch({ type: "TOGGLE_BOX", index: index })
+    fillArray: length => dispatch(actions.fillTags(length)),
+    toggleCheckboxValue: index => dispatch(actions.toggleBox(index)),
+    updateTags: showId => dispatch(actions.updateTags(showId)),
+    fetchData: showId => dispatch(actions.fetchData(showId)),
+    populateData: showId => dispatch(actions.populateData(showId)),
+    toggleModal: () => dispatch(actions.toggleModal())
   };
 };
 
