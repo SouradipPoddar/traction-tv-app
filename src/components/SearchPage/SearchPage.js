@@ -19,7 +19,7 @@ class SearchPage extends Component {
         let respSuggestions = [];
         if (value.length !== 0) {
           axios
-            .get("https://api.themoviedb.org/3/search/tv", {
+            .get("http://54.243.244.135/3/search/tv", {
               params: {
                 api_key: process.env.REACT_APP_TMDB_KEY,
                 language: "en-US",
