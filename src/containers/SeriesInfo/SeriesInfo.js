@@ -1,16 +1,15 @@
 import React, { Component } from "react";
 import "./SeriesInfo.css";
-import { axiosTmdb } from "../../axios-tmdb";
 import ActionList from "../../components/ActionList/ActionList";
 import RatingBar from "../../components/RatingBar/RatingBar";
 import NetworkInfoBar from "../../components/NetworkInfoBar/NetworkInfoBar";
-import firebaseSetup from "../../firebase-db";
 import Tags from "../../components/Tags/Tags";
 import SeasonInfo from "../SeasonInfo/SeasonInfo";
 import { Route, Switch } from "react-router-dom";
 import EpisodeListInfo from "../EpisodeListInfo/EpisodeListInfo";
 import { connect } from "react-redux";
 import * as actions from "../../store/actions/tagActions";
+import * as userActions from "../../store/actions/userActions";
 
 class SeriesInfo extends Component {
   state = {
@@ -77,7 +76,19 @@ class SeriesInfo extends Component {
               <div className="infoList">
                 <span className="info">{this.props.data.status}</span>
                 <ul className="genreList">{genreList}</ul>
-                <ActionList homepage={this.props.data.homepage} />
+                <ActionList
+                  homepage={this.props.data.homepage}
+                  favAdd={() =>
+                    this.props.toggleFav(
+                      this.props.userId,
+                      this.props.token,
+                      this.props.data.id,
+                      this.props.data.name,
+                      this.props.data.poster_path
+                    )
+                  }
+                  isFav={this.props.favList.includes(this.props.data.id)}
+                />
               </div>
               <div className="infoList">
                 <div className="ratingBar">
@@ -142,10 +153,13 @@ class SeriesInfo extends Component {
 
 const mapStateToProps = state => {
   return {
-    tagValues: state.tagValues,
-    tags: state.tags,
-    data: state.data,
-    showTagModal: state.showTagModal
+    tagValues: state.tags.tagValues,
+    tags: state.tags.tags,
+    data: state.tags.data,
+    showTagModal: state.tags.showTagModal,
+    userId: state.auth.userId,
+    token: state.auth.token,
+    favList: state.user.favList
   };
 };
 
@@ -156,7 +170,9 @@ const mapDispatchToProps = dispatch => {
     updateTags: showId => dispatch(actions.updateTags(showId)),
     fetchData: showId => dispatch(actions.fetchData(showId)),
     populateData: showId => dispatch(actions.populateData(showId)),
-    toggleModal: () => dispatch(actions.toggleModal())
+    toggleModal: () => dispatch(actions.toggleModal()),
+    toggleFav: (userId, token, showId, showName, poster) =>
+      dispatch(userActions.addFav(userId, token, showId, showName, poster))
   };
 };
 

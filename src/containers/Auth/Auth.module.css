@@ -1,0 +1,61 @@
+.loginWrapper {
+  display: flex;
+  flex-flow: column;
+  width: 15%;
+  text-align: center;
+  margin: auto;
+  background-color: black;
+  padding: 2.5%;
+  border-radius: 6px;
+}
+
+.input {
+  border: 2px solid white;
+  padding: 12px;
+  border-radius: 5px;
+  margin: 5px;
+  background-color: black;
+  color: white;
+}
+
+.input::placeholder {
+  color: white;
+  font-family: "Roboto Slab", serif;
+}
+
+.header {
+  color: white;
+}
+
+.loginButton {
+  margin: auto;
+  margin-top: 20px;
+}
+
+.signInNote {
+  color: white;
+  font-style: italic;
+  margin-top: 10%;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.error {
+  color: white;
+  padding: 8px;
+}
+
+.errorWrapper {
+  background-color: red;
+  display: flex;
+  flex-flow: column;
+  width: 15%;
+  text-align: center;
+  margin: auto;
+  padding-right: 2.5%;
+  padding-left: 2.5%;
+  padding-top: 0.2%;
+  padding-bottom: 0.2%;
+  margin-top: 10%;
+  border-radius: 6px;
+}

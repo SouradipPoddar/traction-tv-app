@@ -7,16 +7,21 @@
 .icon {
   background-color: black;
   padding: 8px;
+  cursor: pointer;
 }
 
-.icon i {
+.whiteIcon {
   color: white;
+}
+
+.iconFav {
+  color: red;
 }
 
 .icon:hover {
   background-color: white;
 }
 
-.icon:hover i {
+.icon:hover .whiteIcon {
   color: black;
 }

@@ -2,20 +2,37 @@ import React, { Component } from "react";
 import "./App.css";
 import SearchPage from "./components/SearchPage/SearchPage";
 import SeriesInfo from "./containers/SeriesInfo/SeriesInfo";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Auth from "./containers/Auth/Auth";
+import { connect } from "react-redux";
+import * as authActions from "./store/actions/authActions";
 
 class App extends Component {
+  componentDidMount() {
+    this.props.reAuthUser();
+  }
+
   render() {
     return (
       <BrowserRouter>
         <div className="App">
           <SearchPage />
-          {/*<SeriesInfo seriesId="63247" />*/}
         </div>
-        <Route path="/show/:id" component={SeriesInfo} />
+        <Switch>
+          <Route path="/show/:id" component={SeriesInfo} />
+          <Route path="/login" component={Auth} />
+        </Switch>
       </BrowserRouter>
     );
   }
 }
 
-export default App;
+const mapDispatchToProps = dispatch => {
+  return {
+    reAuthUser: () => dispatch(authActions.reAuthUser())
+  };
+};
+export default connect(
+  null,
+  mapDispatchToProps
+)(App);

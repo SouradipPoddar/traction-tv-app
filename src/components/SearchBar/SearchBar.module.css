@@ -19,7 +19,17 @@
   display: flex;
 }
 
-.wrapperDiv div {
+.loginButton {
+  margin-left: 54%;
+}
+
+.loginButton span {
+  font-size: 16px;
+  vertical-align: top;
+  cursor: pointer;
+}
+
+.searchButton {
   background-color: white;
   height: 32px;
   border-top-right-radius: 20px;
@@ -27,7 +37,7 @@
   border-bottom-right-radius: 20px;
 }
 
-.fa-search {
+.faSearch {
   color: #263238;
   vertical-align: text-top;
   margin-top: 5px;
@@ -44,4 +54,11 @@
   padding-left: 1%;
   font-size: 25px;
   font-weight: 100;
+}
+
+.profileButton {
+  font-size: 14px;
+  border: 1px solid;
+  padding: 5px;
+  cursor: pointer;
 }

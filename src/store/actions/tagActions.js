@@ -22,7 +22,7 @@ export const updateTags = showId => {
       .get()
       .then(resp => {
         let newTags;
-        const state = getState();
+        const state = getState().tags;
         if (!resp.exists) {
           newTags = {};
           for (let i in state.tagList) {
@@ -84,8 +84,8 @@ export const populateData = showId => {
       .then(resp => {
         if (!resp.exists) {
           let emptyTags = {};
-          for (let i in getState().tagList) {
-            emptyTags[getState().tagList[i]] = 0;
+          for (let i in getState().tags.tagList) {
+            emptyTags[getState().tags.tagList[i]] = 0;
           }
           dispatch(setTags(emptyTags));
           dispatch(fillTags(Object.keys(emptyTags).length));

@@ -3,6 +3,7 @@ import "./SearchPage.css";
 import "../SearchBar/SearchBar";
 import SearchBar from "../SearchBar/SearchBar";
 import axios from "axios";
+import { connect } from "react-redux";
 
 class SearchPage extends Component {
   state = {
@@ -60,6 +61,7 @@ class SearchPage extends Component {
           suggestions={this.state.suggestions}
           focusFunc={this.suggestionToggleHandler}
           show={this.state.suggestionVisibility}
+          userId={this.props.userId ? this.props.userId.split("@")[0] : null}
         />
         {/*<SearchResults results={this.state.suggestions} />*/}
       </div>
@@ -67,4 +69,10 @@ class SearchPage extends Component {
   }
 }
 
-export default SearchPage;
+const mapStateToProps = state => {
+  return {
+    userId: state.auth.userId
+  };
+};
+
+export default connect(mapStateToProps)(SearchPage);
