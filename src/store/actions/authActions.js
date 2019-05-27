@@ -1,5 +1,6 @@
 import * as actionTypes from "./actionTypes";
 import axios from "axios";
+import { fetchFav } from "./userActions";
 
 export const signUpDispatch = (userId, token) => {
   return { type: actionTypes.SIGN_UP, userId, token };
@@ -26,6 +27,7 @@ export const signUp = (userId, password, signUpState, history, fromTrue) => {
           localStorage.setItem("idToken", resp.data.idToken);
           localStorage.setItem("refreshToken", resp.data.refreshToken);
           dispatch(signUpDispatch(resp.data.email, resp.data.idToken));
+          dispatch(fetchFav(resp.data.email, resp.data.idToken));
           if (fromTrue.state !== undefined && fromTrue.state !== null) {
             history.goBack();
           }
@@ -56,6 +58,7 @@ export const signUp = (userId, password, signUpState, history, fromTrue) => {
           );
           localStorage.setItem("expiryDate", expiryTime);
           dispatch(signUpDispatch(resp.data.email, resp.data.idToken));
+          dispatch(fetchFav(resp.data.email, resp.data.idToken));
           if (fromTrue.state !== undefined && fromTrue.state !== null) {
             history.goBack();
           }
@@ -83,6 +86,7 @@ export const reAuthUser = () => {
         )
         .then(resp => {
           dispatch(signUpDispatch(resp.data.users[0].email, idToken));
+          dispatch(fetchFav(resp.data.users[0].email, idToken));
           dispatch(expiryCounter(refreshTime.getTime() - new Date().getTime()));
           //dispatch(expiryCounter(5000));
         });

@@ -2,7 +2,8 @@ import * as actionTypes from "../actions/actionTypes";
 
 const initialState = {
   favourite: false,
-  favList: []
+  favList: [],
+  favouriteList: []
 };
 
 const userReducer = (state = initialState, action) => {
@@ -15,6 +16,15 @@ const userReducer = (state = initialState, action) => {
         (item, i) => item !== action.showId
       );
       return { ...state, favList: newFavList };
+    }
+    case actionTypes.FETCH_FAV: {
+      const newFavList = action.data.map(
+        (item, i) => +item.document.fields.showId.stringValue
+      );
+      return { ...state, favList: newFavList };
+    }
+    case actionTypes.SET_FAV: {
+      return { ...state, favList: action.data };
     }
   }
   return state;

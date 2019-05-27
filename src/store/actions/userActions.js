@@ -62,3 +62,45 @@ export const addFav = (userId, token, showId, showName, poster) => {
 export const deleteFav = showId => {
   return { type: actionTypes.DELETE_FAV, showId };
 };
+
+export const fetchFav = (userId, token) => {
+  return dispatch => {
+    const payload = {
+      structuredQuery: {
+        where: {
+          fieldFilter: {
+            field: { fieldPath: "userid" },
+            op: "EQUAL",
+            value: { stringValue: userId }
+          }
+        },
+        from: [{ collectionId: "favourites" }]
+      }
+    };
+
+    const config = {
+      headers: {
+        Authorization: "Bearer " + token
+      }
+    };
+
+    axios
+      .post(
+        "https://firestore.googleapis.com/v1beta1/projects/traction-tv/databases/(default)/documents:runQuery",
+        payload,
+        config
+      )
+      .then(resp => {
+        dispatch(fetchFavDispatch(resp.data));
+        dispatch(setFavDispatch(resp.data));
+      });
+  };
+};
+
+export const fetchFavDispatch = data => {
+  return { type: actionTypes.FETCH_FAV, data };
+};
+
+export const setFavDispatch = data => {
+  return { type: actionTypes.SET_FAV, data };
+};

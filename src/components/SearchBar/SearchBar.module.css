@@ -20,7 +20,8 @@
 }
 
 .loginButton {
-  margin-left: 54%;
+  margin-left: 52%;
+  display: flex;
 }
 
 .loginButton span {
@@ -60,5 +61,10 @@
   font-size: 14px;
   border: 1px solid;
   padding: 5px;
+  cursor: pointer;
+}
+
+.iconStyle {
+  margin-right: 15%;
   cursor: pointer;
 }

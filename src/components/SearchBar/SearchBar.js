@@ -17,6 +17,17 @@ const SearchBar = props => (
         <i className={["fas fa-search fa-sm", styles.faSearch].join(" ")} />
       </div>
       <div className={styles.loginButton}>
+        <div className={styles.iconStyle}>
+          <Link
+            to={{
+              pathname: "/favourites",
+              state: { prevPath: props.location.pathname }
+            }}
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            <i class="fas fa-heart" />
+          </Link>
+        </div>
         {props.userId ? (
           <div className={styles.profileButton}>
             {props.userId.toUpperCase()}
@@ -29,7 +40,7 @@ const SearchBar = props => (
             }}
             style={{ textDecoration: "none", color: "white" }}
           >
-            <span>Login/Sign Up</span>
+            <span>Sign In</span>
           </Link>
         )}
       </div>

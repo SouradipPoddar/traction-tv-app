@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styles from "./SeasonInfo.module.css";
 import NavigationButtonset from "../../components/UI/NavigationButtonset/NavigationButtonset";
 import { Link } from "react-router-dom";
-import { SSL_OP_DONT_INSERT_EMPTY_FRAGMENTS } from "constants";
 
 class SeasonInfo extends Component {
   state = {

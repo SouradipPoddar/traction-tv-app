@@ -9,3 +9,5 @@ export const SIGN_UP = "SIGN_UP";
 export const HANDLE_ERR = "HANDLE_ERR";
 export const ADD_FAV = "ADD_FAV";
 export const DELETE_FAV = "DELETE_FAV";
+export const FETCH_FAV = "FETCH_FAV";
+export const SET_FAV = "SET_FAV";

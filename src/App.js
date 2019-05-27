@@ -5,6 +5,7 @@ import SeriesInfo from "./containers/SeriesInfo/SeriesInfo";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Auth from "./containers/Auth/Auth";
 import { connect } from "react-redux";
+import Favourites from "./containers/Favourites/Favourites";
 import * as authActions from "./store/actions/authActions";
 
 class App extends Component {
@@ -21,6 +22,7 @@ class App extends Component {
         <Switch>
           <Route path="/show/:id" component={SeriesInfo} />
           <Route path="/login" component={Auth} />
+          <Route path="/favourites" component={Favourites} />
         </Switch>
       </BrowserRouter>
     );
