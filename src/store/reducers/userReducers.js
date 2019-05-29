@@ -24,7 +24,7 @@ const userReducer = (state = initialState, action) => {
       return { ...state, favList: newFavList };
     }
     case actionTypes.SET_FAV: {
-      return { ...state, favList: action.data };
+      return { ...state, favouriteList: action.data };
     }
   }
   return state;
